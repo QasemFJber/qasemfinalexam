@@ -24,3 +24,80 @@ SharedPreferencesManager.getInstance().then((manager) {
   String value = manager?.getValue('key', 'default value');
   // استخدم القيمة المستلمة هنا
 });
+
+
+
+
+Api
+
+
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+class Category {
+  final int id;
+  final String title;
+  final String description;
+  final String image;
+  final bool visible;
+  final int productsCount;
+
+  Category({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.visible,
+    required this.productsCount,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      image: json['image'],
+      visible: json['visible'] == 1,
+      productsCount: json['products_count'],
+    );
+  }
+}
+
+Future<List<Category>> fetchCategories() async {
+  final apiUrl = 'http://demo-api.mr-dev.tech/api/categories';
+
+  try {
+    final response = await http.get(Uri.parse(apiUrl));
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      final List<Category> categories = responseData
+          .map((categoryJson) => Category.fromJson(categoryJson))
+          .toList();
+      return categories;
+    } else {
+      throw Exception('Failed to fetch categories');
+    }
+  } catch (e) {
+    throw Exception('Failed to fetch categories: $e');
+  }
+}
+
+class Auth {
+  bool isLoggedIn = false;
+  String? authToken;
+
+  Future<void> login(String username, String password) async {
+    // اجتازت عملية التحقق من اسم المستخدم وكلمة المرور هنا
+
+    // افتراضية: بعد التحقق بنجاح ، قم بتعيين حالة تسجيل الدخول على صحيحة والحصول على رمز المصادقة
+    isLoggedIn = true;
+    authToken = 'توكن المصادقة الخاص بك';
+  }
+
+  void logout() {
+    // افتراضية: بعد تسجيل الخروج ، قم بتعيين حالة تسجيل الدخول على خاطئة وحذف رمز المصادقة
+    isLoggedIn = false;
+    authToken = null;
+  }
+}
