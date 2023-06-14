@@ -1,0 +1,26 @@
+لإنشاء كائن SharedPreferencesManager والحصول على الاستخدام الفعلي للـ SharedPreferences:
+
+SharedPreferencesManager.getInstance().then((manager) {
+  // يمكنك استخدام الـ SharedPreferences هنا
+});
+لإضافة قيمة جديدة في SharedPreferences:
+
+SharedPreferencesManager.getInstance().then((manager) {
+  manager?.setValue('key', 'value');
+});
+لتعديل قيمة موجودة في SharedPreferences:
+
+SharedPreferencesManager.getInstance().then((manager) {
+  manager?.setValue('key', 'new value');
+});
+لحذف قيمة من SharedPreferences:
+
+SharedPreferencesManager.getInstance().then((manager) {
+  manager?.removeValue('key');
+});
+لقراءة قيمة من SharedPreferences:
+
+SharedPreferencesManager.getInstance().then((manager) {
+  String value = manager?.getValue('key', 'default value');
+  // استخدم القيمة المستلمة هنا
+});
